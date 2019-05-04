@@ -1,0 +1,65 @@
+package ${package};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
+import com.hqjl.common.privilege.bean.RequestParaInfo;
+import com.hqjl.common.util.ResultContent;
+
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+/**
+*
+* author: ${user}
+* Date: ${today}
+
+
+*/
+#set($reqClass=${helper.findClassName($entityClass,"ReqVO")})
+#set($reqDelClass=${helper.findClassName($entityClass,"ReqDelVO")})
+#set($resClass=${helper.findClassName($entityClass,"ResVO")})
+@RestController
+@RequestMapping("/srest/{rgnID}/{schID}/${objClassName}/")
+public class $className{
+#set($serviceClassName="${objClassName.substring(0,1).toLowerCase()}${objClassName.substring(1)}Service")
+@Autowired
+private I${entityClass}Service ${serviceClassName};
+
+@RequestMapping("/save${entityClass}")
+public ResultContent
+<Object> save${entityClass}(@RequestBody RequestParaInfo<${reqClass}> ${helper.lowerFirstLetter($reqClass)}){
+  ${serviceClassName}.submit(#foreach($item in $helper.sliceFields)
+    ${helper.lowerFirstLetter(${reqClass})}.getParameter().get${helper.upperFirstLetter(${item})}(),#end
+  ${helper.lowerFirstLetter($reqClass)}.getParameter());
+  return ResultContent.getSuccessResult();
+  }
+
+  @RequestMapping("/delete${entityClass}")
+  public ResultContent
+  <Object> delete${entityClass}(@RequestBody RequestParaInfo<${reqDelClass}>
+    ${helper.lowerFirstLetter($reqDelClass)}){
+    ${serviceClassName}.removeByIds(
+    #foreach($item in $helper.sliceFields)
+      ${helper.lowerFirstLetter(${reqDelClass})}.getParameter().get${helper.upperFirstLetter(${item})}(),
+    #end
+      ${helper.lowerFirstLetter(${reqDelClass})}.getParameter().get${helper.upperFirstLetter(${helper.primaryKey.property})}s()
+    );
+    return ResultContent.getSuccessResult();
+    }
+    #foreach($itemx in $!{helper.sliceFieldInfos})
+      @RequestMapping("/query${entityClass}List")
+      public ResultContent
+    <Object> query${entityClass}List(@RequestBody RequestParaInfo<${reqClass}> ${helper.lowerFirstLetter($reqClass)}){
+      List<${resClass}> result = ${serviceClassName}.findBy$!{itemx.conditionName}(#foreach($item in $helper.sliceFields)
+      ${helper.lowerFirstLetter(${reqClass})}.getParameter().get${helper.upperFirstLetter(${item})}()#if($foreach.hasNext),#end#end);
+      return ResultContent.createSuccessResult(result);
+      }
+    #end
+
+    }

@@ -1,0 +1,2 @@
+The project is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]. And some changes have been made to adjust spring jpa, function of analysis from table was
+added, and support for encoding GBK and scala was removed.

@@ -1,0 +1,44 @@
+package ${package};
+
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+/**
+*
+* author: ${user}
+* Date: ${today}
+
+
+*/
+
+#set($reqClass=${helper.findClassName($entityClass,"ReqVO")})
+#set($resClass=${helper.findClassName($entityClass,"ResVO")})
+#if($!{isCollection})
+  #set($resType= "List<${resClass}>")
+#else
+  #set($resType= "${resClass}")
+#end
+
+public interface $className{
+
+#foreach($item in $!divisionFieldInfos)
+  $!{resType}  findBy$!{item.conditionName}($!{item.typeFields});
+#end
+#foreach($item in $!{helper.sliceFieldInfos})
+  $!{resType}  findBy$!{item.conditionName}($!{item.typeFields});
+#end
+#if(!${helper.sliceFieldInfos.isEmpty()})
+  #foreach($item in $!{helper.sliceFieldInfos})
+  void submit($!{item.typeFields},${reqClass} ${helper.lowerFirstLetter(${entityClass})} );
+  void removeById($!{item.typeFields},${helper.primaryKeyType} id );
+  void removeByIds($!{item.typeFields},List<${helper.primaryKeyType}> ids );
+  #end
+#else
+void submit(${reqClass} ${helper.lowerFirstLetter(${entityClass})} );
+void removeById(${helper.primaryKeyType} id );
+void removeByIds(List<${helper.primaryKeyType}> ids );
+#end
+
+}

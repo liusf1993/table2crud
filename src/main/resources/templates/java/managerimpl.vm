@@ -1,0 +1,98 @@
+#set($objVariable=${helper.lowerFirstLetter($entityClass)})
+#set($objListVariable="${objVariable}List")
+package ${package};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+
+/**
+* ${className}
+*
+* author: ${user}
+* Date: ${today}
+
+
+*/
+@Component
+public class ${className} implements ${helper.findClassName("Manager")}{
+
+#if($!{isCollection})
+  #set($returnType= "List<${entityClass}>")
+#else
+  #set($returnType= "${entityClass}")
+#end
+#set($daoName=${helper.lowerFirstLetter(${helper.findClassName("DAO").substring(1)})})
+
+@Autowired
+private ${helper.findClassName("DAO")} $!{daoName};
+
+#foreach($item in $!divisionFieldInfos)
+@Override
+public $!{returnType}  findBy$!{item.conditionName}($!{item.typeFields}){
+return $!{daoName}.findBy$!{item.conditionName}($!{item.divisionField});
+}
+#end
+#foreach($item in $!{helper.sliceFieldInfos})
+@Override
+public $!{returnType}  findBy$!{item.conditionName}($!{item.typeFields}){
+return $!{daoName}.findBy$!{item.conditionName}($!{item.divisionField});
+}
+#end
+
+
+#if(!${helper.sliceFieldInfos.isEmpty()})
+  #foreach($item in $!{helper.sliceFieldInfos})
+  public void save($!{item.typeFields},${entityClass} ${helper.lowerFirstLetter(${entityClass})} ){
+    $!{daoName}.save($objVariable);
+  }
+  public void save($!{item.typeFields},List<${entityClass}> ${helper.lowerFirstLetter(${entityClass})}List ){
+    $!{daoName}.save($objListVariable);
+  }
+  public void delete($!{item.typeFields},${entityClass} ${helper.lowerFirstLetter(${entityClass})} ){
+    $!{daoName}.delete($objVariable);
+  }
+  public void delete($!{item.typeFields},List<${entityClass}> ${helper.lowerFirstLetter(${entityClass})}List ){
+    $!{daoName}.save($objListVariable);
+  }
+  @Override
+  public void deleteById($!{item.typeFields},${helper.primaryKeyType} id ){
+    $!{daoName}.delete(id);
+  }
+  @Override
+  public void deleteByIds($!{item.typeFields},List<${helper.primaryKeyType}> ids ){
+    $!{daoName}.delete($!{daoName}.findAll(ids));
+  }
+  #end
+#else
+@Override
+public void save(${objClassName} $objVariable ){
+  $!{daoName}.save($objVariable);
+}
+@Override
+public void save(List<${objClassName}> $objListVariable ){
+  $!{daoName}.save($objListVariable);
+}
+@Override
+public void delete(List<${objClassName}> $objListVariable ){
+  $!{daoName}.delete($objListVariable);
+}
+@Override
+public void delete(${objClassName} $objVariable ){
+  $!{daoName}.delete($objVariable);
+}
+@Override
+public void deleteById(${helper.primaryKeyType} id ){
+  $!{daoName}.delete(id);
+}
+@Override
+public void deleteByIds(List<${helper.primaryKeyType}> ids ){
+  $!{daoName}.delete($!{daoName}.findAll(ids));
+}
+#end
+
+}

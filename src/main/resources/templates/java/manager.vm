@@ -1,0 +1,50 @@
+package ${package};
+
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+/**
+*
+* author: ${user}
+* Date: ${today}
+
+
+*/
+
+public interface $className{
+
+#if($!{isCollection})
+  #set($returnType= "List<${entityClass}>")
+#else
+  #set($returnType= "${entityClass}")
+#end
+
+#foreach($item in $!divisionFieldInfos)
+  $!{returnType}  findBy$!{item.conditionName}($!{item.typeFields});
+#end
+#foreach($item in $!{helper.sliceFieldInfos})
+  $!{returnType}  findBy$!{item.conditionName}($!{item.typeFields});
+#end
+
+#if(!${helper.sliceFieldInfos.isEmpty()})
+  #foreach($item in $!{helper.sliceFieldInfos})
+  void save($!{item.typeFields},${entityClass} ${helper.lowerFirstLetter(${entityClass})} );
+  void save($!{item.typeFields},List<${entityClass}> ${helper.lowerFirstLetter(${entityClass})}List );
+  void delete($!{item.typeFields},${entityClass} ${helper.lowerFirstLetter(${entityClass})} );
+  void delete($!{item.typeFields},List<${entityClass}> ${helper.lowerFirstLetter(${entityClass})}List );
+  void deleteById($!{item.typeFields},${helper.primaryKeyType} id );
+  void deleteByIds($!{item.typeFields},List<${helper.primaryKeyType}> ids );
+  #end
+#else
+void save(${entityClass} ${helper.lowerFirstLetter(${entityClass})} );
+void save(List<${entityClass}> ${helper.lowerFirstLetter(${entityClass})}List );
+void delete(${entityClass} ${helper.lowerFirstLetter(${entityClass})} );
+void delete(List<${entityClass}> ${helper.lowerFirstLetter(${entityClass})}List );
+void deleteById(${helper.primaryKeyType} id );
+void deleteByIds(List<${helper.primaryKeyType}> ids );
+#end
+
+
+}

@@ -1,0 +1,81 @@
+package ${package};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+#foreach($import in $!{importList})
+#if("$!{import}"!="")
+import $!{import};
+#end
+#end
+
+/**
+ * ${className}
+ *
+ * author: ${user}
+ * Date: ${today}
+
+
+ */
+@Service
+public class ${className} implements ${helper.findClassName("Service")}{
+#set($managerName=$helper.findClassName("Manager"))
+#set($managerVarialbe=${helper.lowerFirstLetter($!{managerName.substring(1)})})
+#set($reqClass=${helper.findClassName($entityClass,"ReqVO")})
+#set($resClass=${helper.findClassName($entityClass,"ResVO")})
+#set($transferClass=${helper.findClassName($entityClass,"Transfer")})
+#set($objVariable=${helper.lowerFirstLetter(${reqClass})})
+#if($!{isCollection})
+  #set($resType= "List<${resClass}>")
+#else
+  #set($resType= "${resClass}")
+#end
+
+  @Autowired
+private ${managerName} ${managerVarialbe};
+
+
+#foreach($item in $!divisionFieldInfos)
+@Override
+public $!{resType}  findBy$!{item.conditionName}($!{item.typeFields}){
+return ${transferClass}.transfer2ResVO($!{managerName}.findBy$!{item.conditionName}($!{item.divisionField}));
+}
+#end
+#foreach($item in $!{helper.sliceFieldInfos})
+@Override
+public $!{resType}  findBy$!{item.conditionName}($!{item.typeFields}){
+return ${transferClass}.transfer2ResVO($!{managerVarialbe}.findBy$!{item.conditionName}($!{item.divisionField}));
+}
+#end
+
+
+#if(!${helper.sliceFieldInfos.isEmpty()})
+  #foreach($item in $!{helper.sliceFieldInfos})
+  public void submit($!{item.typeFields},${reqClass} ${helper.lowerFirstLetter(${reqClass})} ){
+    $!{managerVarialbe}.save(${item.divisionField},${transferClass}.transferFromReqVO($objVariable));
+  }
+
+  @Override
+  public void removeById($!{item.typeFields},${helper.primaryKeyType} id ){
+    $!{managerVarialbe}.deleteById(${item.divisionField},id);
+  }
+  @Override
+  public void removeByIds($!{item.typeFields},List<${helper.primaryKeyType}> ids ){
+    $!{managerVarialbe}.deleteByIds(${item.divisionField},ids);
+  }
+  #end
+#else
+@Override
+public void submit(${reqClass} ${helper.lowerFirstLetter(${reqClass})} ){
+  $!{managerVarialbe}.save(${transferClass}.transferFromReqVO($objVariable));
+}
+@Override
+public void removeById(${helper.primaryKeyType} id ){
+  $!{managerVarialbe}.deleteById(id);
+}
+@Override
+public void removeByIds(List<${helper.primaryKeyType}> ids ){
+  $!{managerVarialbe}.deleteByIds(ids);
+}
+#end
+
+
+}

@@ -1,0 +1,41 @@
+package ${package};
+
+import java.util.Objects;
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+import java.util.stream.Collectors;
+#macro(firstLower $name)
+  ${name.substring(0,1).toLowerCase()}${name.substring(1)}
+#end
+#macro(firstUpper $name)${name.substring(0,1).toUpperCase()}${name.substring(1)}#end
+#set($reqClass="${entityName}ReqVO")
+#set($resClass="${entityName}ResVO")
+/**
+*
+* author: ${user}
+* Date: ${today}
+*/
+public class ${className} implements Serializable{
+public static ${entityName} transferFromReqVO(${reqClass} ${helper.lowerFirstLetter($reqClass)}){
+return new ${entityName}()
+#foreach( $column in ${columnList})
+.set${helper.upperFirstLetter(${column.property})}(${helper.lowerFirstLetter($reqClass)}.get${helper.upperFirstLetter(${column.property})}())
+#end
+;
+}
+public static ${resClass} transfer2ResVO(${entityName} ${helper.lowerFirstLetter(${entityName})}){
+return new ${resClass}()
+#foreach( $column in ${columnList})
+.set${helper.upperFirstLetter(${column.property})}(${helper.lowerFirstLetter($entityName)}.get${helper.upperFirstLetter(${column.property})}())
+#end
+;
+}
+
+public static List<${resClass}> transfer2ResVO(List<${entityName}> ${helper.lowerFirstLetter(${entityName})}List){
+return ${helper.lowerFirstLetter(${entityName})}List.stream().map(${className}::transfer2ResVO).collect(Collectors.toList());
+}
+
+}

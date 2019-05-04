@@ -1,0 +1,35 @@
+package ${package};
+
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+/**
+*
+* author: ${user}
+* Date: ${today}
+*/
+public class ${className} implements Serializable{
+
+#foreach($!{column} in $!{columnList})
+/**
+* ${column.comment}
+*/
+private ${column.type} ${column.property};
+#end
+
+#foreach($!{column} in $!{columnList})
+/**
+* ${column.property} getter & setter
+*/
+public ${column.type} get${column.key}() {
+return ${column.property};
+}
+public ${className} set${column.key}(${column.type} ${column.property}){
+this.${column.property} = ${column.property};
+return this;
+}
+
+#end
+}

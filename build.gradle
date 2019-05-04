@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.4.2'
+
+}
+
+group 'com.hqjl'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.scala-lang:scala-library:2.11.11"
+    compile "org.scala-lang:scala-reflect:2.11.11"
+    compile 'org.apache.velocity:velocity-tools:2.0@jar'
+    compile 'mysql:mysql-connector-java:5.1.41'
+    compile 'commons-beanutils:commons-beanutils:1.9.3'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+}
+
+intellij {
+    version '2018.3.5'
+}
+patchPluginXml {
+    description """ A tool for generating code from table, which is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]"""
+    changeNotes """ Add function for connection to database, and generate crud code by table in database, remove support of GBK encoding 
+and language scala."""
+
+}
+apply plugin: 'idea'
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+apply plugin: 'scala'
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala', 'src/main/java']
+        }
+        java {
+            srcDirs = []
+        }
+    }
+
+    test {
+        scala {
+            srcDirs = ['src/test/scala', 'src/test/java']
+        }
+        java {
+            srcDirs = []
+        }
+    }
+}
+
+//可选（项目初始化时,可用gradle cDirs生成scala及java的src目录）
+task "createDirs" << {
+    sourceSets*.scala.srcDirs*.each { it.mkdirs() }
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+}

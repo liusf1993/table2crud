@@ -1,0 +1,79 @@
+package ${package};
+
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+/**
+*
+* author: ${user}
+* Date: ${today}
+*/
+@Entity
+@Table(name = "${helper.tableName}")
+public class ${className} implements ${implements}{
+
+#foreach($!{column} in $!{columnList})
+/**
+* ${column.comment}
+*/
+  #if(${column.primaryKey})
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  #end
+@Column(name = "${column.dbField}")
+private ${column.type} ${column.property};
+#end
+
+#foreach($!{column} in $!{columnList})
+/**
+* ${column.property} getter & setter
+*/
+  #if($overrides.contains(${column.property}))
+  @Override
+  #end
+public ${column.type} get${column.key}() {
+return ${column.property};
+}
+public ${className} set${column.key}(${column.type} ${column.property}){
+this.${column.property} = ${column.property};
+return this;
+}
+#end
+
+@Override
+public boolean equals(Object o) {
+if (this == o) {
+return true;
+}
+if (o == null || getClass() != o.getClass()) {
+return false;
+}
+${className} that = (${className}) o;
+return #foreach($!{column} in ${columnList}) Objects.equals(this.${column.property},that.${column.property})#if($foreach.hasNext) &&#end #end
+;
+}
+
+@Override
+public int hashCode() {
+return Objects
+.hash(#foreach($!{column} in ${columnList}) this.${column.property} #if(${foreach.hasNext}), #end #end
+);
+}
+
+@Override
+public String toString() {
+return "${className}{" +
+#foreach($!{column} in ${columnList})
+"${column.property} = "+${column.property}#if($foreach.hasNext) +","+#end
+#end;
+}
+}

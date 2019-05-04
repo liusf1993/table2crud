@@ -1,0 +1,48 @@
+package ${package};
+
+#foreach($import in $!{importList})
+  #if("$!{import}"!="")
+  import $!{import};
+  #end
+#end
+import java.util.ArrayList;
+/**
+*
+* author: ${user}
+* Date: ${today}
+*/
+public class ${className} implements Serializable{
+
+#foreach($!{column} in $!{helper.sliceAndPris})
+/**
+* ${column.comment}
+*/
+private ${column.type} ${column.property};
+  #if(${column.primaryKey})
+  private List<${helper.primaryKeyType}> ${column.property}s = new ArrayList<>();
+  #end
+#end
+
+#foreach($!{column} in $!{helper.sliceAndPris})
+/**
+* ${column.property} getter & setter
+*/
+public ${column.type} get${column.key}() {
+return ${column.property};
+}
+public ${className} set${column.key}(${column.type} ${column.property}){
+this.${column.property} = ${column.property};
+return this;
+}
+  #if(${column.primaryKey})
+  public List<${helper.primaryKeyType}> get${column.key}s() {
+  return ${column.property}s;
+  }
+  public ${className} set${column.key}s(List<${helper.primaryKeyType}> ${column.property}s){
+  this.${column.property}s = ${column.property}s;
+  return this;
+  }
+  #end
+
+#end
+}
