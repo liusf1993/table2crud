@@ -4,7 +4,7 @@
   <version>1.0-SNAPSHOT</version>
   <vendor>liusf12@live.com</vendor>
 
-  <idea-version since-build="183.5912"/>
+  <idea-version since-build="172.1104" until-build="192.*"/>
   <description>A tool for generating code from table, which is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]
   </description>
   <change-notes>

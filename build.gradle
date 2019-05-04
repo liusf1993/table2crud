@@ -25,6 +25,7 @@ dependencies {
 
 intellij {
     version '2018.3.5'
+    intellij.updateSinceUntilBuild false
 }
 patchPluginXml {
     description """ A tool for generating code from table, which is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]"""
