@@ -1,5 +1,14 @@
-The project is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]. And some changes have been made to adjust spring jpa, function of analysis from table was
-added, and support for encoding GBK and scala was removed.
+### Intention
+In java project, a small function related to a table may be in multilayer structure. So when we create a table, it means that we  need to create
+ a serials of files such as entity/dao/service and so on. The work  is mechanical repetition but can not be avoid, so a tool which can simplify the work is needed.
+ 
+### Discover
+I search on web and find AutoGenerator[https://github.com/i17c/AutoGenerator.git], but it cannot satisfy some case and has not been
+maintained for about 3 years. So I cloned it and did some changes.  
+The changes I made include supporting spring jpa(template changed), 
+ connection to datasource, 
+ user defined query fields;
+ but support for encoding GBK and scala was removed.
 
 ## Quick start  
 table user is used for next example
