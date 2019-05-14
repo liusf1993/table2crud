@@ -1,15 +1,19 @@
 <idea-plugin>
   <id>com.hqjl</id>
   <name>table2crud</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.3</version>
   <vendor>liusf12@live.com</vendor>
 
   <idea-version since-build="172.1104" until-build="192.*"/>
-  <description>A tool for generating code from table, which is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]
+  <description>
+    <![CDATA[
+<html>
+<p>In java project, a small function related to a table may be in multilayer structure. So when we create a table, it means that we need to create a serials of files such as entity/dao/service and so on. The work is mechanical repetition but can not be avoid, and this a tool which can help you simplify the work . ..</p>
+The source code is on <a href="https://github.com/liusf1993/table2crud"> https://github.com/liusf1993/table2crud.</a>
+      </html>
+      ]]>
+
   </description>
-  <change-notes>
-    Add function for connection to database, and generate crud code by table in database, remove support of GBK encoding
-  </change-notes>
 
   <extensions defaultExtensionNs="com.intellij">
     <projectService serviceImplementation="com.hqjl.table2crud.storage.PluginConfigHolder"/>

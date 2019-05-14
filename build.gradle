@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.hqjl'
-version '1.0'
+version '1.0.3'
 
 sourceCompatibility = 1.8
 
@@ -28,9 +28,7 @@ intellij {
     intellij.updateSinceUntilBuild false
 }
 patchPluginXml {
-    description """ A tool for generating code from table, which is based on AutoGenerator[https://github.com/i17c/AutoGenerator.git]"""
-    changeNotes """ Add function for connection to database, and generate crud code by table in database, remove support of GBK encoding 
-and language scala."""
+    changeNotes """ add notes """
 
 }
 apply plugin: 'idea'
