@@ -36,7 +36,7 @@ private ${managerName} ${managerVarialbe};
 #foreach($item in $!divisionFieldInfos)
 @Override
 public $!{resType}  findBy$!{item.conditionName}($!{item.typeFields}){
-return ${transferClass}.transfer2ResVO($!{managerName}.findBy$!{item.conditionName}($!{item.divisionField}));
+return ${transferClass}.transfer2ResVO($!{managerVarialbe}.findBy$!{item.conditionName}($!{item.divisionField}));
 }
 #end
 #foreach($item in $!{helper.sliceFieldInfos})
