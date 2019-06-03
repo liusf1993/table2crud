@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.hqjl'
-version '1.0.4'
+version '1.0.5-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -28,7 +28,7 @@ intellij {
     intellij.updateSinceUntilBuild false
 }
 patchPluginXml {
-    changeNotes """ add notes """
+    changeNotes """ use isBoolean instead of getBoolean for get&set method for boolean fields """
 
 }
 apply plugin: 'idea'

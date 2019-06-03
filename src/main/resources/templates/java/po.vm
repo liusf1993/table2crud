@@ -40,9 +40,15 @@ private ${column.type} ${column.property};
   #if($overrides.contains(${column.property}))
   @Override
   #end
-public ${column.type} get${column.key}() {
-return ${column.property};
-}
+  #if(${column.type.toLowerCase().equals("boolean")})
+  public ${column.type} is${column.key}() {
+  return ${column.property};
+  }
+  #else
+  public ${column.type} get${column.key}() {
+  return ${column.property};
+  }
+  #end
 public ${className} set${column.key}(${column.type} ${column.property}){
 this.${column.property} = ${column.property};
 return this;
