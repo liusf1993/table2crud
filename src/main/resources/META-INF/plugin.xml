@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.hqjl</id>
   <name>table2crud</name>
-  <version>1.0.3</version>
+  <version>1.0.5</version>
   <vendor>liusf12@live.com</vendor>
 
   <idea-version since-build="172.1104" until-build="192.*"/>
