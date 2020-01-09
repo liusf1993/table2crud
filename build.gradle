@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.hqjl'
-version '1.0.7'
+version '1.1.0'
 
 sourceCompatibility = 1.8
 
@@ -25,7 +25,10 @@ dependencies {
 
 intellij {
     version '2018.3.5'
+    type 'IU'
     intellij.updateSinceUntilBuild false
+    plugins = ['DatabaseTools', 'Velocity']
+
 }
 patchPluginXml {
     changeNotes """ use isBoolean instead of getBoolean for get&set method for boolean fields """

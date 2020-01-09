@@ -17,14 +17,21 @@ import com.hqjl.table2crud.storage.SettingManager;
 import com.hqjl.table2crud.storage.domain.PluginProjectConfig;
 import com.hqjl.table2crud.threadvar.ThreadVariablesHolder;
 import com.hqjl.table2crud.util.SqlAnaly;
+import com.intellij.database.model.DasColumn;
+import com.intellij.database.model.DasTableKey;
+import com.intellij.database.model.ObjectKind;
+import com.intellij.database.psi.DbTable;
+import com.intellij.database.util.DasUtil;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.ui.JBColor;
 import com.intellij.ui.table.JBTable;
+import com.intellij.util.containers.JBIterable;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -59,7 +66,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.SystemIndependent;
 
 public class GeneratorMainDialog extends JDialog {
   private static final long serialVersionUID = -1783629807073084146L;
@@ -449,7 +455,31 @@ public class GeneratorMainDialog extends JDialog {
   private void init() {
     initSettings();
     initEventListener();
+    loadDataIfTableSelected();
 
+  }
+
+  private void loadDataIfTableSelected() {
+    try {
+      PsiElement psiElement = event.getData(LangDataKeys.PSI_ELEMENT);
+      if (psiElement instanceof DbTable) {
+        DbTable selectDbTable = (DbTable) psiElement;
+        JBIterable<DasColumn> columns = selectDbTable.getDasChildren(ObjectKind.COLUMN).filter(DasColumn.class);
+        String tableName = selectDbTable.getName();
+        List<Column> columns2 = new ArrayList<>();
+        for (DasColumn column : columns) {
+          columns2.add(new Column(column.getName(), column.getDataType().getSpecification(), DasUtil.isPrimary(column)));
+        }
+        DasTableKey primaryKey = DasUtil.getPrimaryKey(selectDbTable);
+        if (primaryKey == null || primaryKey.getColumnsRef().size() != 1) {
+          throw new RuntimeException("only tables with one and only one primary key are supported!");
+        }
+        renewGeneratorPanel(tableName, columns2, primaryKey.getColumnsRef().iterate().next());
+        corePanel.setSelectedComponent(generatorPanel);
+      }
+    } catch (Exception e) {
+      dealException(e);
+    }
   }
 
   private void initSettings() {
