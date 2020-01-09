@@ -15,6 +15,10 @@ package ${package};
 
 public interface $className{
 
+#if(${divisionFieldInfos.isEmpty}&&${sliceFieldInfos.isEmpty})
+    List<${entityClass}> findAll();
+#end
+
 #if($!{isCollection})
   #set($returnType= "List<${entityClass}>")
 #else

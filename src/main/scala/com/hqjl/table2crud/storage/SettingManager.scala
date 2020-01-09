@@ -11,7 +11,7 @@ object SettingManager {
     val pluginProjectConfig = PluginProjectConfigHolder.getPluginProjectConfig
     val setting = new Setting
     if (pluginConfig != null) {
-      setting.setAuthor(pluginConfig.author)
+      setting.setAuthor(pluginConfig.getAuthor)
       setting.setLanguage(pluginConfig.language)
       setting.setCode(pluginConfig.code)
       setting.setEncoding(pluginConfig.encoding)

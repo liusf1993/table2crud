@@ -57,14 +57,7 @@ class DBSettings {
 }
 
 object DBSettings {
-  def apply(url: String = "jdbc:mysql://127.0.0.1:3306/rms?autoReconnect=true&useUnicode=true&amp;characterEncoding=UTF-8",
-            username: String = "root", password: String = "123456", db: String = "rgnplatform"): DBSettings = {
+  def apply(url: String = "127.0.0.1:3306", username: String = "root", password: String = "", db: String = "mysql"): DBSettings = {
     new DBSettings(url, username, password, db)
   }
-
-  def apply(ip: String, port: String, username: String, password: String, db: String): Unit = {
-    new DBSettings(ip, port, username, password, db)
-  }
-
-
 }

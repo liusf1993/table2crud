@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,9 +62,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.SystemIndependent;
 
 public class GeneratorMainDialog extends JDialog {
-
-
-  private static final Logger logger = Logger.getInstance(GeneratorMainDialog.class);
   private static final long serialVersionUID = -1783629807073084146L;
   /**
    * header info
@@ -457,20 +455,19 @@ public class GeneratorMainDialog extends JDialog {
   private void initSettings() {
     PluginProjectConfig pluginProjectConfig = PluginProjectConfigHolder.getPluginProjectConfig();
     String path = pluginProjectConfig.getPath();
-    @SystemIndependent String basePath = Objects.requireNonNull(event.getProject()).getBasePath();
-    if(!String.valueOf(path).startsWith(basePath)){
+    String basePath = Objects.requireNonNull(event.getProject()).getBasePath();
+    if(!String.valueOf(path).startsWith(String.valueOf(basePath))){
       pluginProjectConfig.setPath(basePath);
     }
 
     setContentPane(contentPanel);
     getRootPane().setDefaultButton(analysisBtn);
     setBackground(background);
-    if (pluginProjectConfig != null) {
-      ddlInput.setText(pluginProjectConfig.sql());
-    }
-    final Setting setting1 = SettingManager.get();
-    applySettings(setting1);
+    ddlInput.setText(pluginProjectConfig.sql());
     Setting setting = SettingManager.get();
+    authorTxt.setText(setting.getAuthor());
+    applySettings(setting);
+    setting = SettingManager.get();
     initDBSetting(setting);
   }
 
@@ -491,12 +488,24 @@ public class GeneratorMainDialog extends JDialog {
     BTN_selPath.addActionListener(e -> {
       chooseFolderOnlyDescriptor.setTitle("Select Path");
       chooseFolderOnlyDescriptor.setDescription("Select Path To Generate, generally we choose the biz path to generate");
-      VirtualFile file = FileChooser.chooseFile(chooseFolderOnlyDescriptor, Env.project, null);
-      if (file != null) {
-        pathTxt.setText(file.getPath());
+      VirtualFile projectFile = FileChooser.chooseFile(chooseFolderOnlyDescriptor, Env.project, null);
+      if (projectFile != null) {
+        String projectPath = projectFile.getPath();
+        File file = new File(projectPath);
+        File javaSourceFile = new File(projectPath + "/src/main/java");
+        if (javaSourceFile.exists()) {
+          file = javaSourceFile;
+        }
+        do {
+          String[] list = file.list((dir, name) -> dir.isDirectory());
+          if (list == null || list.length != 1) {
+            break;
+          }
+          file = new File(list[0]);
+        } while (true);
+        pathTxt.setText(projectPath);
         dealMessage("");
-        SettingManager.applyPrjPath(file.getPath());
-        System.out.println(file.getPath());
+        SettingManager.applyPrjPath(projectPath);
       }
     });
 
@@ -632,8 +641,7 @@ public class GeneratorMainDialog extends JDialog {
 
 
   private DbReader getDbReader() {
-    return DbReader
-        .apply(dbUrlTxt.getText(), dbUsernameTxt.getText(), new String(dbPasswdTxt.getPassword()), dbDatabaseTxt.getText());
+    return DbReader.apply(dbUrlTxt.getText(), dbUsernameTxt.getText(), new String(dbPasswdTxt.getPassword()), dbDatabaseTxt.getText());
   }
 
   private void dealException(Throwable e) {

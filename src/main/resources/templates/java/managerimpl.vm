@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ${className} implements ${helper.findClassName("Manager")}{
 
+
 #if($!{isCollection})
   #set($returnType= "List<${entityClass}>")
 #else
@@ -31,6 +32,12 @@ public class ${className} implements ${helper.findClassName("Manager")}{
 @Autowired
 private ${helper.findClassName("DAO")} $!{daoName};
 
+
+#if(${divisionFieldInfos.isEmpty}&&${sliceFieldInfos.isEmpty})
+public List<${entityClass}> findAll(){
+  return $!{daoName}.findAll();
+}
+#end
 #foreach($item in $!divisionFieldInfos)
 @Override
 public $!{returnType}  findBy$!{item.conditionName}($!{item.typeFields}){

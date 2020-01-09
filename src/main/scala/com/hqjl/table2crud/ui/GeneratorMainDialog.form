@@ -619,6 +619,7 @@
                     </constraints>
                     <properties>
                       <text resource-bundle="msg" key="db.url"/>
+                      <toolTipText value="{ip}:{port} format, eg. 127.0.0.1:3306"/>
                     </properties>
                   </component>
                 </children>

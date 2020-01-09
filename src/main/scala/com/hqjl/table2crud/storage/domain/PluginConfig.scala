@@ -1,6 +1,7 @@
 package com.hqjl.table2crud.storage.domain
 
 import com.hqjl.table2crud.domain.DBSettings
+import org.apache.commons.lang3.StringUtils
 
 /**
   *
@@ -8,7 +9,7 @@ import com.hqjl.table2crud.domain.DBSettings
 @SerialVersionUID(-2408231700721356773L)
 class PluginConfig extends Serializable {
 
-  var author: String = System.getProperty("user.name")
+  private var author: String = _
   var language: String = "english"
   var code: String = "JAVA"
   var encoding: String = "UTF-8"
@@ -37,7 +38,13 @@ class PluginConfig extends Serializable {
     this
   }
 
-  def getAuthor: String = this.author
+  def getAuthor: String = {
+    if (StringUtils.isBlank(author)) {
+      System.getProperty("user.name")
+    } else {
+      this.author
+    }
+  }
 
   def setLanguage(language: String): PluginConfig = {
     this.language = language
