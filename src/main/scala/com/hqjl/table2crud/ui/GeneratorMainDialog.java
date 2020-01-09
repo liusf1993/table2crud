@@ -464,17 +464,21 @@ public class GeneratorMainDialog extends JDialog {
       PsiElement psiElement = event.getData(LangDataKeys.PSI_ELEMENT);
       if (psiElement instanceof DbTable) {
         DbTable selectDbTable = (DbTable) psiElement;
-        JBIterable<DasColumn> columns = selectDbTable.getDasChildren(ObjectKind.COLUMN).filter(DasColumn.class);
+        JBIterable<DasColumn> dbColumns = selectDbTable.getDasChildren(ObjectKind.COLUMN).filter(DasColumn.class);
         String tableName = selectDbTable.getName();
-        List<Column> columns2 = new ArrayList<>();
-        for (DasColumn column : columns) {
-          columns2.add(new Column(column.getName(), column.getDataType().getSpecification(), DasUtil.isPrimary(column)));
-        }
         DasTableKey primaryKey = DasUtil.getPrimaryKey(selectDbTable);
-        if (primaryKey == null || primaryKey.getColumnsRef().size() != 1) {
+        if (primaryKey == null) {
           throw new RuntimeException("only tables with one and only one primary key are supported!");
         }
-        renewGeneratorPanel(tableName, columns2, primaryKey.getColumnsRef().iterate().next());
+        String primaryKeyName = primaryKey.getColumnsRef().iterate().next();
+        List<Column> columns = new ArrayList<>();
+        for (DasColumn dbColumn : dbColumns) {
+          Column column = new Column(dbColumn.getName(), dbColumn.getDataType().getSpecification(),
+              primaryKeyName.equalsIgnoreCase(dbColumn.getName()));
+          column.setComment(dbColumn.getComment());
+          columns.add(column);
+        }
+        renewGeneratorPanel(tableName, columns, primaryKeyName);
         corePanel.setSelectedComponent(generatorPanel);
       }
     } catch (Exception e) {
