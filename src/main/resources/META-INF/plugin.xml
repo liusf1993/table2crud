@@ -4,7 +4,7 @@
   <version>1.1.0</version>
   <vendor>liusf12@live.com</vendor>
 
-  <idea-version since-build="172.1104" until-build="192.*"/>
+  <idea-version since-build="172.1104" />
   <description>
     <![CDATA[
 <html>

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -16,8 +15,8 @@ public class SqlAnaly {
   public static String cleanSql(String sql) {
     sql = sql.replaceAll("\\r", "");
     sql = sql.replaceAll("\\n\\n", "\n")
-        .replaceAll("(?i)\\n\\s+comment", " comment")
-        .replaceAll("(?i)\\n\\s+primary", " primary");
+      .replaceAll("(?i)\\n\\s+comment", " comment")
+      .replaceAll("(?i)\\n\\s+primary", " primary");
     sql = fixComment(sql);
     sql = fixColumnType(sql);
     sql = sql.replaceAll(",", "\n");

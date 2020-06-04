@@ -1,7 +1,6 @@
 package com.hqjl.table2crud.util;
 
 import com.hqjl.table2crud.constant.GenerateType;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 名称工具类
@@ -19,13 +18,13 @@ public class NameUtil {
   public static String upFirstAll(String s) {
     s = s.trim().replaceAll("\\s", " ");
     String[] sa = s.split(" ");
-    String r = "";
+    StringBuilder r = new StringBuilder();
     for (String o : sa) {
       if (StringUtils.isNotBlank(o)) {
-        r += upFirst(o);
+        r.append(upFirst(o));
       }
     }
-    return r;
+    return r.toString();
   }
 
   public static String upFirst(String o) {

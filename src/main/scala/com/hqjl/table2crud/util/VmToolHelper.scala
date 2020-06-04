@@ -3,7 +3,6 @@ package com.hqjl.table2crud.util
 import com.hqjl.table2crud.constant.GenerateType
 import com.hqjl.table2crud.domain.Column
 import com.hqjl.table2crud.generator.{DivisionFieldInfo, GenerateFileModel, SliceFieldsInfo}
-import org.apache.commons.lang.StringUtils
 
 
 class VmToolHelper {
@@ -16,7 +15,7 @@ object VmToolHelper {
   private var sliceFields: Array[String] = Array.empty
 
   def lowerFirstLetter(s: String): String = {
-    if (StringUtils.isEmpty(s)) {
+    if (s == null) {
       ""
     } else {
       s.substring(0, 1).toLowerCase + s.substring(1)
@@ -121,10 +120,9 @@ object VmToolHelper {
     tableModel.tableName
   }
 
-  def getPrimaryKey:Column = {
+  def getPrimaryKey: Column = {
     tableModel.getColumns.find(_.getPrimaryKey).get
   }
-
 
 
 }

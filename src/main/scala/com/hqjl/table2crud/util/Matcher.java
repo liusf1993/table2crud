@@ -3,7 +3,6 @@ package com.hqjl.table2crud.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * 内容匹配类

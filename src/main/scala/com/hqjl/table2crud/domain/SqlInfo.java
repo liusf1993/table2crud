@@ -1,7 +1,7 @@
 package com.hqjl.table2crud.domain;
 
+import com.hqjl.table2crud.util.StringUtils;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
 
 /**
  *

@@ -17,6 +17,7 @@ import com.hqjl.table2crud.storage.SettingManager;
 import com.hqjl.table2crud.storage.domain.PluginProjectConfig;
 import com.hqjl.table2crud.threadvar.ThreadVariablesHolder;
 import com.hqjl.table2crud.util.SqlAnaly;
+import com.hqjl.table2crud.util.StringUtils;
 import com.intellij.database.model.DasColumn;
 import com.intellij.database.model.DasTableKey;
 import com.intellij.database.model.ObjectKind;
@@ -65,9 +66,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 
 public class GeneratorMainDialog extends JDialog {
+
   private static final long serialVersionUID = -1783629807073084146L;
   /**
    * header info
@@ -215,7 +216,7 @@ public class GeneratorMainDialog extends JDialog {
     //先保存关于prj的配置
     Setting settingSave = new Setting(Encoding.get(encoding), Code.get(code), path);
     settingSave.setSwitch(false, false, false, false,
-        overwriteChx.isSelected(), false);
+      overwriteChx.isSelected(), false);
     SettingManager.applyPrj(settingSave);
     Setting setting = SettingManager.get();
     if (setting.getPath().isEmpty()) {
@@ -372,10 +373,9 @@ public class GeneratorMainDialog extends JDialog {
       DbReader dbReader = getDbReader();
       TableDesc[] tableDescs = dbReader.readColumns(tableName);
       List<Column> columns = Arrays.stream(tableDescs).map(x -> new Column(x.field(), x.fieldType(), x.primary()).setComment(x.comment()))
-          .collect(
-              Collectors.toList());
+        .collect(Collectors.toList());
       TableDesc tableDesc = Arrays.stream(tableDescs).filter(TableDesc::primary).findFirst()
-          .orElseThrow(() -> new RuntimeException("primary key not exists"));
+        .orElseThrow(() -> new RuntimeException("primary key not exists"));
       renewGeneratorPanel(tableName, columns, tableDesc.field());
       corePanel.setSelectedComponent(generatorPanel);
       dealMessage("analysis finished");
@@ -474,7 +474,7 @@ public class GeneratorMainDialog extends JDialog {
         List<Column> columns = new ArrayList<>();
         for (DasColumn dbColumn : dbColumns) {
           Column column = new Column(dbColumn.getName(), dbColumn.getDataType().getSpecification(),
-              primaryKeyName.equalsIgnoreCase(dbColumn.getName()));
+            primaryKeyName.equalsIgnoreCase(dbColumn.getName()));
           column.setComment(dbColumn.getComment());
           columns.add(column);
         }
@@ -490,7 +490,7 @@ public class GeneratorMainDialog extends JDialog {
     PluginProjectConfig pluginProjectConfig = PluginProjectConfigHolder.getPluginProjectConfig();
     String path = pluginProjectConfig.getPath();
     String basePath = Objects.requireNonNull(event.getProject()).getBasePath();
-    if(!String.valueOf(path).startsWith(String.valueOf(basePath))){
+    if (!String.valueOf(path).startsWith(String.valueOf(basePath))) {
       pluginProjectConfig.setPath(basePath);
     }
 
@@ -575,7 +575,7 @@ public class GeneratorMainDialog extends JDialog {
 
     //checkbox的save
     ActionListener saveSwitches = e -> SettingManager.applySwitch(false, false, false,
-        selectAll.isSelected(), overwriteChx.isSelected(), false);
+      selectAll.isSelected(), overwriteChx.isSelected(), false);
 
     overwriteChx.addActionListener(saveSwitches);
 
@@ -599,10 +599,10 @@ public class GeneratorMainDialog extends JDialog {
 
   private void initGlobalEvent() {
     contentPanel.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+      JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     contentPanel.registerKeyboardAction(e -> {
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+      }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+      JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
@@ -620,7 +620,7 @@ public class GeneratorMainDialog extends JDialog {
 
   private void registerEnterEvent(JComponent jComponent, JButton btn) {
     jComponent.registerKeyboardAction((e) -> btn.doClick(), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+      JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
   }
 
   private synchronized void readTables() {
@@ -658,7 +658,7 @@ public class GeneratorMainDialog extends JDialog {
       Code code = Code.JAVA;
       Setting settings = new Setting(author, encoding, code);
       DBSettings dbSettings = DBSettings
-          .apply(dbUrlTxt.getText(), dbUsernameTxt.getText(), new String(dbPasswdTxt.getPassword()), dbDatabaseTxt.getText());
+        .apply(dbUrlTxt.getText(), dbUsernameTxt.getText(), new String(dbPasswdTxt.getPassword()), dbDatabaseTxt.getText());
       settings.setDbSettings(dbSettings);
       SettingManager.applyApp(settings);
       getDbReader();
