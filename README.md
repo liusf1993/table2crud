@@ -28,7 +28,10 @@ table user is used for next example
       modified_time bigint                not null comment '修改时间'
   )
 
-  ```
+  ```  
+
+0. If you are using an `Ultimate Edition` of `Intellij Idea`, just work with `Database Tool`, and then create 
+a db connection, `right click` the table, and then select `table2crud`. 
 1. Tools->table2crud or shortcut ```alt+shift+u``` to enter the tool  
 ![](docs/screenshot/1.entrance.png)
 and the main page is like this
