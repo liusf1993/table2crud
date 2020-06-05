@@ -30,10 +30,10 @@ table user is used for next example
 
   ```  
 
-0. If you are using an `Ultimate Edition` of `Intellij Idea`, just work with `Database Tool`, and then create 
-a db connection, `right click` the table, and then select `table2crud`. 
+0. If you are using an `Ultimate Edition` of `Intellij Idea`, just work with `Database Tool`. Create 
+a db connection with `Database Tool`, `right click` on the table, and then select `table2crud`. 
 1. Tools->table2crud or shortcut ```alt+shift+u``` to enter the tool  
-![1](docs/screenshot/1.entrance.png)
+![](docs/screenshot/1.entrance.png)
 and the main page is like this
 ![](docs/screenshot/2.main.png)
 
