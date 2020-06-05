@@ -30,7 +30,7 @@ table user is used for next example
 
   ```
 1. Tools->table2crud or shortcut ```alt+shift+u``` to enter the tool  
-![](docs/screenshot/1.entrance.png)
+![1](docs/screenshot/1.entrance.png)
 and the main page is like this
 ![](docs/screenshot/2.main.png)
 
