@@ -1,7 +1,7 @@
 package com.hqjl.table2crud.storage.domain
 
 import com.hqjl.table2crud.domain.DBSettings
-import org.apache.commons.lang3.StringUtils
+import com.hqjl.table2crud.util.StringUtils
 
 /**
   *
