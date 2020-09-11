@@ -165,7 +165,20 @@ public class GeneratorMainDialog extends JDialog {
   private JPanel datasourcePanel;
   private JTextField sliceFields;
   private AnActionEvent event;
+  private static GeneratorMainDialog old = null;
 
+  public static GeneratorMainDialog createDialog(AnActionEvent event) {
+    if (old == null) {
+      GeneratorMainDialog dialog = new GeneratorMainDialog(event);
+      dialog.setLocation(600,500);
+      old = dialog;
+      return dialog;
+    } else {
+      old.event = event;
+      old.init();
+      return old;
+    }
+  }
   public GeneratorMainDialog(AnActionEvent event) {
     this.event = event;
     init();
@@ -491,7 +504,7 @@ public class GeneratorMainDialog extends JDialog {
     String path = pluginProjectConfig.getPath();
     String basePath = Objects.requireNonNull(event.getProject()).getBasePath();
     if (!String.valueOf(path).startsWith(String.valueOf(basePath))) {
-      pluginProjectConfig.setPath(basePath);
+      dealMessage("path was not start with project path!!!");
     }
 
     setContentPane(contentPanel);

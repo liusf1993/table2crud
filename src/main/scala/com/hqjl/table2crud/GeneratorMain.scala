@@ -11,7 +11,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 class GeneratorMain extends AnAction {
   override def actionPerformed(e: AnActionEvent): Unit = {
     Env.project = e.getProject
-    val dialog = new GeneratorMainDialog(e)
+    val dialog = GeneratorMainDialog.createDialog(e)
     dialog.pack()
     dialog.setVisible(true)
   }

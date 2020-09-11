@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory
 /**
   *
   */
-@State(name = "PluginProjectConfig", storages = Array(new Storage(value = "autoCodeGeneratorConfig.xml")))
 object PluginProjectConfigHolder {
   private val logger = LoggerFactory.getLogger(classOf[PluginProjectConfigHolder])
 
@@ -23,7 +22,7 @@ object PluginProjectConfigHolder {
   }
 }
 
-@State(name = "PluginProjectConfig", storages = Array(new Storage(value = "autoCodeGeneratorConfig.xml")))
+@State(name = "PluginProjectConfig", storages = Array(new Storage(value = "~/table2crudConfig.xml")))
 class PluginProjectConfigHolder extends PersistentStateComponent[PluginProjectConfig] {
   private val pluginProjectConfig = new PluginProjectConfig
 
